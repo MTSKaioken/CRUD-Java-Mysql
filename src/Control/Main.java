@@ -11,9 +11,10 @@ import java.sql.*;
  * @author mtskaioken
  */
 public class Main {
-    public static void main(String[] args) {   
-        System.out.println(Sql.SqlConnect());
-        
+    public static void main(String[] args) {
+
+        System.out.println(Sql.SqlConnect());      
+        System.out.println(Sql.SqlRequest("MTSKaioken", "kaio2011"));
        
     }
 }
