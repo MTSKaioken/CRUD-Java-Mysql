@@ -4,18 +4,29 @@
  * and open the template in the editor.
  */
 package View;
-import Model.Sql;
+import connection.ConnectionFactory;
+import Control.LoginController;
+import java.awt.TextField;
+import dao.UsuariosDAO;
+import java.sql.*;
+import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JPasswordField;
+import model.Usuarios;
 /**
  *
  * @author mtskaioken
  */
-public class Screen_Login extends javax.swing.JFrame {
-
+public class LoginView extends javax.swing.JFrame {
+    private final LoginController controller;
     /**
      * Creates new form Screen_Login
      */
-    public Screen_Login() {
+    public LoginView() {
         initComponents();
+        controller = new LoginController(this);
+        
     }
 
     /**
@@ -120,13 +131,12 @@ public class Screen_Login extends javax.swing.JFrame {
         //se enter for pressionado, chamar a validação
         String Login = txtlogin.getText();
         System.out.print(Login);
-        
         String Senha = txtSenha.getText();
         System.out.print(Senha);
     }//GEN-LAST:event_txtloginActionPerformed
 
     private void txtSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSenhaActionPerformed
-        // TODO add your handling code here:
+       
         String Login = txtlogin.getText();
         System.out.print(Login);
         
@@ -135,19 +145,15 @@ public class Screen_Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSenhaActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        // TODO add your handling code here:
+        controller.CallCadastrar();
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        // TODO add your handling code here:
-        String Login = txtlogin.getText();     
-        String Senha = txtSenha.getText();      
-       // try{
-        System.out.print(Sql.SqlRequest(Login, Senha));
-       // }
-       // catch (Exception e){
-            System.out.println("Erro desconhecido");
-        //}
+        try {
+            controller.autenticar();
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
@@ -167,22 +173,41 @@ public class Screen_Login extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Screen_Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Screen_Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Screen_Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Screen_Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Screen_Login().setVisible(true);
+                new LoginView().setVisible(true);
             }
         });
+    }
+
+    public JPasswordField getTxtSenha() {
+        return txtSenha;
+    }
+
+    public void setTxtSenha(JPasswordField txtSenha) {
+        this.txtSenha = txtSenha;
+    }
+
+    public TextField getTxtlogin() {
+        return txtlogin;
+    }
+
+    public void setTxtlogin(TextField txtlogin) {
+        this.txtlogin = txtlogin;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

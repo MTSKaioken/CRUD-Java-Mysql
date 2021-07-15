@@ -9,12 +9,12 @@ package View;
  *
  * @author mtskaioken
  */
-public class Screen_Menu extends javax.swing.JFrame {
+public class MenuView extends javax.swing.JFrame {
 
     /**
      * Creates new form Screen_Menu
      */
-    public Screen_Menu() {
+    public MenuView() {
         initComponents();
     }
 
@@ -38,7 +38,7 @@ public class Screen_Menu extends javax.swing.JFrame {
         setTitle("Menu");
         setMinimumSize(new java.awt.Dimension(486, 356));
 
-        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/apagar.png"))); // NOI18N
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/imgs/apagar.png"))); // NOI18N
         jButton8.setText("Apagar");
         jButton8.setMinimumSize(new java.awt.Dimension(320, 320));
         jButton8.addActionListener(new java.awt.event.ActionListener() {
@@ -47,7 +47,7 @@ public class Screen_Menu extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/mais.png"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/imgs/mais.png"))); // NOI18N
         jButton1.setText("Adicionar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -55,10 +55,10 @@ public class Screen_Menu extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/alterar.png"))); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/imgs/alterar.png"))); // NOI18N
         jButton2.setText("Alterar");
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/salvar.png"))); // NOI18N
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/imgs/salvar.png"))); // NOI18N
         jButton3.setText("Salvar");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -137,20 +137,23 @@ public class Screen_Menu extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Screen_Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Screen_Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Screen_Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Screen_Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Screen_Menu().setVisible(true);
+                new MenuView().setVisible(true);
             }
         });
     }
