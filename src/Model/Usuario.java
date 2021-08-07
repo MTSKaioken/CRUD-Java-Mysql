@@ -3,20 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package Model;
 
 /**
  *
  * @author mtskaioken
  */
-public class Usuarios {
+public class Usuario {
     private String Login;
     private String Senha;
     
-    public Usuarios(){
+    public Usuario(){
         
     }
-    public Usuarios(String Login, String Senha){
+    public Usuario(String Login, String Senha){
         setLogin(Login);
         setSenha(Senha);
     }

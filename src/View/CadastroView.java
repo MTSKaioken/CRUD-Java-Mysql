@@ -88,7 +88,13 @@ public class CadastroView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        controller.SalvaUsuario();
+    if(txtLogin.getText().equals("") || txtSenha.getText().equals("")){
+        System.out.println("Campo vazio");
+    }
+    else{
+            System.out.println("Campos preenchidos");
+            }
+//controller.SalvaUsuario();
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     /**

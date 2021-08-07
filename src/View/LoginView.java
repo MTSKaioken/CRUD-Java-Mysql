@@ -4,16 +4,17 @@
  * and open the template in the editor.
  */
 package View;
-import connection.ConnectionFactory;
+import Model.dao.ConnectionFactory;
 import Control.LoginController;
 import java.awt.TextField;
-import dao.UsuariosDAO;
+import Model.dao.UsuariosDAO;
+import java.awt.Color;
 import java.sql.*;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPasswordField;
-import model.Usuarios;
+import Model.Usuario;
 /**
  *
  * @author mtskaioken
@@ -51,19 +52,37 @@ public class LoginView extends javax.swing.JFrame {
         setName("Login"); // NOI18N
         setSize(new java.awt.Dimension(600, 320));
 
+        lblLogin.setFont(new java.awt.Font("Noto Sans Mono", 1, 14)); // NOI18N
         lblLogin.setName("lblLogin"); // NOI18N
         lblLogin.setText("Login");
 
         txtlogin.setName("txtLogin"); // NOI18N
+        txtlogin.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtloginFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtloginFocusLost(evt);
+            }
+        });
         txtlogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtloginActionPerformed(evt);
             }
         });
 
+        lblSenha.setFont(new java.awt.Font("Noto Sans Mono", 1, 14)); // NOI18N
         lblSenha.setName("lblSenha"); // NOI18N
         lblSenha.setText("Senha");
 
+        txtSenha.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtSenhaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtSenhaFocusLost(evt);
+            }
+        });
         txtSenha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSenhaActionPerformed(evt);
@@ -71,12 +90,16 @@ public class LoginView extends javax.swing.JFrame {
         });
 
         btnLogin.setText("Login");
+        btnLogin.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, java.awt.Color.green, null, null));
+        btnLogin.setBorderPainted(false);
+        btnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLoginActionPerformed(evt);
             }
         });
 
+        btnCadastrar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         btnCadastrar.setLabel("Cadastrar");
         btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -108,9 +131,9 @@ public class LoginView extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(60, Short.MAX_VALUE)
+                .addContainerGap(69, Short.MAX_VALUE)
                 .addComponent(lblLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(2, 2, 2)
                 .addComponent(txtlogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
                 .addComponent(lblSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -120,7 +143,7 @@ public class LoginView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLogin)
                     .addComponent(btnCadastrar))
-                .addContainerGap(95, Short.MAX_VALUE))
+                .addContainerGap(92, Short.MAX_VALUE))
         );
 
         setSize(new java.awt.Dimension(610, 350));
@@ -133,19 +156,29 @@ public class LoginView extends javax.swing.JFrame {
         System.out.print(Login);
         String Senha = txtSenha.getText();
         System.out.print(Senha);
+        
+        try {
+            controller.autenticar();
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginView.class.getName()).log(Level.SEVERE, null, ex);
+        }            
+        
     }//GEN-LAST:event_txtloginActionPerformed
 
     private void txtSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSenhaActionPerformed
-       
-        String Login = txtlogin.getText();
-        System.out.print(Login);
-        
-        String Senha = txtSenha.getText();
-        System.out.print(Senha);              
+       try {
+            controller.autenticar();
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginView.class.getName()).log(Level.SEVERE, null, ex);
+        }            
     }//GEN-LAST:event_txtSenhaActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        controller.CallCadastrar();
+        try {
+            controller.CallCadastrar();
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
@@ -155,6 +188,37 @@ public class LoginView extends javax.swing.JFrame {
             Logger.getLogger(LoginView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void txtloginFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtloginFocusGained
+        if (txtlogin.getText().equals("Insira o Usuario:")) {
+            txtlogin.setText("");
+            txtlogin.setForeground(Color.BLACK);
+        } 
+    }//GEN-LAST:event_txtloginFocusGained
+
+    private void txtloginFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtloginFocusLost
+        // TODO add your handling code here:
+        if (txtlogin.getText().isEmpty()) {
+            txtlogin.setForeground(Color.GRAY);
+            txtlogin.setText("Insira o Usuario:");
+        }
+    }//GEN-LAST:event_txtloginFocusLost
+
+    private void txtSenhaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSenhaFocusGained
+        // TODO add your handling code here:
+         if (txtSenha.getText().equals("Insira a Senha:")) {
+            txtSenha.setText("");
+            txtSenha.setForeground(Color.BLACK);
+        } 
+    }//GEN-LAST:event_txtSenhaFocusGained
+
+    private void txtSenhaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSenhaFocusLost
+        // TODO add your handling code here:
+         if (txtSenha.getText().isEmpty()) {
+            txtSenha.setForeground(Color.GRAY);
+            txtSenha.setText("Insira a Senha:");
+        }
+    }//GEN-LAST:event_txtSenhaFocusLost
 
     /**
      * @param args the command line arguments

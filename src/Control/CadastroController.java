@@ -6,8 +6,10 @@
 package Control;
 
 import View.CadastroView;
-import model.Usuarios;
-import dao.UsuariosDAO;
+import View.MenuView;
+import Model.Usuario;
+import Model.dao.UsuariosDAO;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,14 +23,12 @@ public class CadastroController {
     }
     
     
-    public void SalvaUsuario(){
+    public void SalvaUsuario(){        
     String Login = view.getTxtLogin().getText();
     String Senha = view.getTxtSenha().getText();
-    
-    Usuarios usuario = new Usuarios(Login, Senha);
-    UsuariosDAO usuarioDao = new UsuariosDAO();
-        
-    usuarioDao.insert(usuario);
+    Usuario usuario = new Usuario(Login, Senha);
+    UsuariosDAO usuarioDao = new UsuariosDAO();       
+    usuarioDao.insert(usuario);      
     }
     
 }

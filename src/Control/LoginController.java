@@ -5,13 +5,13 @@
  */
 package Control;
 
-import View.CadastroView;
 import View.LoginView;
 import View.MenuView;
-import connection.ConnectionFactory;
-import model.Usuarios;
-import dao.UsuariosDAO;
+import Model.dao.ConnectionFactory;
+import Model.Usuario;
+import Model.dao.UsuariosDAO;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -27,7 +27,7 @@ public class LoginController {
         String login = view.getTxtlogin().getText();
         String senha = view.getTxtSenha().getText();
         
-        Usuarios usuarioAutenticar = new Usuarios(login, senha);
+        Usuario usuarioAutenticar = new Usuario(login, senha);
         UsuariosDAO usuarioDao = new UsuariosDAO();
         ConnectionFactory.getConnection();
         
@@ -38,12 +38,38 @@ public class LoginController {
         menuView.setVisible(true);
         }
         else{
-        System.out.print("Não existe");
+            JOptionPane.showMessageDialog(null, "Usuario e/ou Senha incorretos");
         }
     }
-    public void CallCadastrar(){
-        CadastroView cadastroView = new CadastroView();
-        cadastroView.setVisible(true);  
+    
+    public void CallCadastrar() throws SQLException{
+        String login = view.getTxtlogin().getText();
+        String senha = view.getTxtSenha().getText();
+        if (login.equals("") || senha.equals("")){
+            System.out.println("campos vazios");
+        }
+        else{
+        Usuario usuarioAutenticar = new Usuario(login, senha);
+        UsuariosDAO usuarioDao = new UsuariosDAO();
+        ConnectionFactory.getConnection();
+        boolean existe = usuarioDao.AutentificaUsuario(usuarioAutenticar);
+        
+        if(existe == false){
+            SalvaUsuario();              
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Usuario ja cadastrado");
+            }
+        }
+    }
+    public void SalvaUsuario(){  
+        
+    String Login = view.getTxtlogin().getText();
+    String Senha = view.getTxtSenha().getText();
+    Usuario usuario = new Usuario(Login, Senha);
+    UsuariosDAO usuarioDao = new UsuariosDAO();   
+    usuarioDao.insert(usuario);
+ 
     }
 
     

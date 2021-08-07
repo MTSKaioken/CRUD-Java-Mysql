@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package connection;
+package Model.dao;
 import com.mysql.jdbc.Driver;
 import java.sql.*;
 import java.util.logging.Level;

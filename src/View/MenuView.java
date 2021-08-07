@@ -4,19 +4,34 @@
  * and open the template in the editor.
  */
 package View;
+import Control.MenuController;
+import Model.Fornecedor;
+import Model.dao.FornecedorDAO;
+import java.awt.Color;
+import java.util.HashSet;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
  * @author mtskaioken
  */
 public class MenuView extends javax.swing.JFrame {
-
+    private final MenuController controller;
     /**
      * Creates new form Screen_Menu
      */
     public MenuView() {
         initComponents();
+        controller = new MenuController(this);
+        DefaultTableModel modelo = (DefaultTableModel) jTabela.getModel();
+        jTabela.setRowSorter(new TableRowSorter(modelo));
+        
+        controller.readJTable();
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,52 +42,136 @@ public class MenuView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton8 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnApagar = new javax.swing.JButton();
+        btnAdicionar = new javax.swing.JButton();
+        btnAlterar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTabela = new javax.swing.JTable();
+        txtEmpresaFornecedora = new javax.swing.JTextField();
+        txtCnpj = new javax.swing.JTextField();
+        txtEnderecoSede = new javax.swing.JTextField();
+        txtTelefoneEmpresa = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu");
         setMinimumSize(new java.awt.Dimension(486, 356));
 
-        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/imgs/apagar.png"))); // NOI18N
-        jButton8.setText("Apagar");
-        jButton8.setMinimumSize(new java.awt.Dimension(320, 320));
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
+        btnApagar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/imgs/apagar.png"))); // NOI18N
+        btnApagar.setText("Apagar");
+        btnApagar.setMinimumSize(new java.awt.Dimension(320, 320));
+        btnApagar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
+                btnApagarActionPerformed(evt);
             }
         });
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/imgs/mais.png"))); // NOI18N
-        jButton1.setText("Adicionar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnAdicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/imgs/mais.png"))); // NOI18N
+        btnAdicionar.setText("Adicionar");
+        btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAdicionarActionPerformed(evt);
             }
         });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/imgs/alterar.png"))); // NOI18N
-        jButton2.setText("Alterar");
+        btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/imgs/alterar.png"))); // NOI18N
+        btnAlterar.setText("Alterar");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/imgs/salvar.png"))); // NOI18N
-        jButton3.setText("Salvar");
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Empresa", "CNPJ", "Endereço", "Telefone"
             }
-        ));
-        jScrollPane2.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTabela.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jTabelaMousePressed(evt);
+            }
+        });
+        jTabela.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTabelaKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTabelaKeyReleased(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jTabela);
+
+        txtEmpresaFornecedora.setForeground(java.awt.Color.gray);
+        txtEmpresaFornecedora.setText("Empresa:");
+        txtEmpresaFornecedora.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtEmpresaFornecedoraFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtEmpresaFornecedoraFocusLost(evt);
+            }
+        });
+        txtEmpresaFornecedora.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEmpresaFornecedoraActionPerformed(evt);
+            }
+        });
+
+        txtCnpj.setForeground(java.awt.Color.gray);
+        txtCnpj.setText("CNPJ:");
+        txtCnpj.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtCnpjFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCnpjFocusLost(evt);
+            }
+        });
+
+        txtEnderecoSede.setForeground(java.awt.Color.gray);
+        txtEnderecoSede.setText("Endereço:");
+        txtEnderecoSede.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtEnderecoSedeFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtEnderecoSedeFocusLost(evt);
+            }
+        });
+
+        txtTelefoneEmpresa.setForeground(java.awt.Color.gray);
+        txtTelefoneEmpresa.setText("Telefone:");
+        txtTelefoneEmpresa.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtTelefoneEmpresaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtTelefoneEmpresaFocusLost(evt);
+            }
+        });
+        txtTelefoneEmpresa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTelefoneEmpresaActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Fornecedores");
+
+        jLabel2.setText("Cadastro Fornecedor");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -81,44 +180,144 @@ public class MenuView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(btnAdicionar)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnApagar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(6, 6, 6)
+                            .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtEnderecoSede, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+                                    .addComponent(txtTelefoneEmpresa))
+                                .addComponent(txtEmpresaFornecedora, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(55, 55, 55)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(93, 93, 93)))
+                .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2))
-                .addContainerGap())
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 180, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addGap(201, 201, 201))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1)
-                    .addComponent(jButton3))
-                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtEmpresaFornecedora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtEnderecoSede, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtTelefoneEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnAlterar)
+                            .addComponent(btnAdicionar)
+                            .addComponent(btnApagar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(50, 50, 50))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+    private void btnApagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApagarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton8ActionPerformed
+    }//GEN-LAST:event_btnApagarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        controller.SalvaFornecedor();
+        controller.readJTable();
+    }//GEN-LAST:event_btnAdicionarActionPerformed
+
+    private void txtTelefoneEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefoneEmpresaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTelefoneEmpresaActionPerformed
+
+    private void txtEmpresaFornecedoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmpresaFornecedoraActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEmpresaFornecedoraActionPerformed
+
+    private void txtEmpresaFornecedoraFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEmpresaFornecedoraFocusGained
+        // TODO add your handling code here:
+        controller.setPlaceHolderEmpresaFornecedora("Empresa:");
+        
+    }//GEN-LAST:event_txtEmpresaFornecedoraFocusGained
+
+    private void txtEmpresaFornecedoraFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEmpresaFornecedoraFocusLost
+        // TODO add your handling code here:
+        controller.clearPlaceHolderEmpresaFornecedora("Empresa:");
+    }//GEN-LAST:event_txtEmpresaFornecedoraFocusLost
+
+    private void txtCnpjFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCnpjFocusGained
+        // TODO add your handling code here:
+        controller.setPlaceHolderCnpj("CNPJ:");   
+    }//GEN-LAST:event_txtCnpjFocusGained
+
+    private void txtCnpjFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCnpjFocusLost
+        // TODO add your handling code here:
+        controller.clearPlaceHolderCnpj("CNPJ:");
+    }//GEN-LAST:event_txtCnpjFocusLost
+
+    private void txtEnderecoSedeFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEnderecoSedeFocusGained
+        // TODO add your handling code here:
+        controller.setPlaceHolderEnderecoSede("Endereço:");   
+    }//GEN-LAST:event_txtEnderecoSedeFocusGained
+
+    private void txtEnderecoSedeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEnderecoSedeFocusLost
+        // TODO add your handling code here:
+        controller.clearPlaceHolderEnderecoSede("Endereço:");
+    }//GEN-LAST:event_txtEnderecoSedeFocusLost
+
+    private void txtTelefoneEmpresaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTelefoneEmpresaFocusGained
+        // TODO add your handling code here:
+        controller.setPlaceHolderTelefone("Telefone:");
+    }//GEN-LAST:event_txtTelefoneEmpresaFocusGained
+
+    private void txtTelefoneEmpresaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTelefoneEmpresaFocusLost
+        // TODO add your handling code here:
+        controller.clearPlaceHolderTelefone("Telefone:");
+    }//GEN-LAST:event_txtTelefoneEmpresaFocusLost
+
+    private void jTabelaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTabelaKeyReleased
+
+    }//GEN-LAST:event_jTabelaKeyReleased
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        // TODO add your handling code here:
+        controller.updateFornecedor();
+        controller.readJTable();
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void jTabelaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTabelaKeyPressed
+        // TODO add your handling code here:
+        controller.getRowFornecedor();
+    }//GEN-LAST:event_jTabelaKeyPressed
+
+    private void jTabelaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabelaMousePressed
+        // TODO add your handling code here:
+       controller.getRowFornecedor();
+    }//GEN-LAST:event_jTabelaMousePressed
 
     /**
      * @param args the command line arguments
@@ -158,12 +357,57 @@ public class MenuView extends javax.swing.JFrame {
         });
     }
 
+    public JTextField getTxtCnpj() {
+        return txtCnpj;
+    }
+
+    public void setTxtCnpj(JTextField txtCnpj) {
+        this.txtCnpj = txtCnpj;
+    }
+
+    public JTextField getTxtEmpresaFornecedora() {
+        return txtEmpresaFornecedora;
+    }
+
+    public void setTxtEmpresaFornecedora(JTextField txtEmpresaFornecedora) {
+        this.txtEmpresaFornecedora = txtEmpresaFornecedora;
+    }
+
+    public JTextField getTxtEnderecoSede() {
+        return txtEnderecoSede;
+    }
+
+    public void setTxtEnderecoSede(JTextField txtEnderecoSede) {
+        this.txtEnderecoSede = txtEnderecoSede;
+    }
+
+    public JTextField getTxtTelefoneEmpresa() {
+        return txtTelefoneEmpresa;
+    }
+
+    public void setTxtTelefoneEmpresa(JTextField txTelefoneEmpresa) {
+        this.txtTelefoneEmpresa = txtTelefoneEmpresa;
+    }
+
+    public JTable getjTabela() {
+        return jTabela;
+    }
+
+    public void setjTabela(JTable jTabela) {
+        this.jTabela = jTabela;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton8;
+    private javax.swing.JButton btnAdicionar;
+    private javax.swing.JButton btnAlterar;
+    private javax.swing.JButton btnApagar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTabela;
+    private javax.swing.JTextField txtCnpj;
+    private javax.swing.JTextField txtEmpresaFornecedora;
+    private javax.swing.JTextField txtEnderecoSede;
+    private javax.swing.JTextField txtTelefoneEmpresa;
     // End of variables declaration//GEN-END:variables
 }
